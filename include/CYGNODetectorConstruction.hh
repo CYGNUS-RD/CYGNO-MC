@@ -91,21 +91,14 @@ class CYGNODetectorConstruction : public G4VUserDetectorConstruction
 
 
     //CADMesh
-    CADMesh* mesh_water_shield;
     CADMesh* mesh_pe_shield;
-    CADMesh* mesh_cu_shield;
-    CADMesh* mesh_camera_shield;
+    CADMesh* mesh_cu_outer_shield;
+    CADMesh* mesh_cu_inner_shield;
     CADMesh* mesh_acrylic_box;
     CADMesh* mesh_cathode;
-    CADMesh* mesh_cathode_frame;
     CADMesh* mesh_fc_sheet;
-    CADMesh* mesh_internal_structure;
-    CADMesh* mesh_gem;
+    CADMesh* mesh_fc_support;
     CADMesh* mesh_gem_frame;
-    CADMesh* mesh_cameras;
-    CADMesh* mesh_lenses;
-    CADMesh* mesh_lenses_ext;
-    CADMesh* mesh_pmts;
     
     
     //Building blocks: logic volumes, sizes and positions
@@ -148,21 +141,14 @@ class CYGNODetectorConstruction : public G4VUserDetectorConstruction
     
     
     //Solids and meshes
-    G4VSolid* cad_water_shield_solid;
     G4VSolid* cad_pe_shield_solid;
-    G4VSolid* cad_cu_shield_solid;
-    G4VSolid* cad_camera_shield_solid;
+    G4VSolid* cad_cu_outer_shield_solid;
+    G4VSolid* cad_cu_inner_shield_solid;
     G4VSolid* cad_acrylic_box_solid;
     G4VSolid* cad_cathode_solid;
-    G4VSolid* cad_cathode_frame_solid;
     G4VSolid* cad_fc_sheet_solid;
-    G4VSolid* cad_internal_structure_solid;
-    G4VSolid* cad_gem_solid;
+    G4VSolid* cad_fc_support_solid;
     G4VSolid* cad_gem_frame_solid;
-    G4VSolid* cad_cameras_solid;
-    G4VSolid* cad_lenses_solid;
-    G4VSolid* cad_lenses_ext_solid;
-    G4VSolid* cad_pmts_solid;
    
     
     // Logical volumes
@@ -175,21 +161,14 @@ class CYGNODetectorConstruction : public G4VUserDetectorConstruction
     G4LogicalVolume* TPC_log;
     G4LogicalVolume* CYGNO_log;
 
-    G4LogicalVolume* cad_water_shield_logical;
     G4LogicalVolume* cad_pe_shield_logical;
-    G4LogicalVolume* cad_cu_shield_logical;
-    G4LogicalVolume* cad_camera_shield_logical;
+    G4LogicalVolume* cad_cu_outer_shield_logical;
+    G4LogicalVolume* cad_cu_inner_shield_logical;
     G4LogicalVolume* cad_acrylic_box_logical;
     G4LogicalVolume* cad_cathode_logical;
-    G4LogicalVolume* cad_cathode_frame_logical;
     G4LogicalVolume* cad_fc_sheet_logical;
-    G4LogicalVolume* cad_internal_structure_logical;
-    G4LogicalVolume* cad_gem_logical;
+    G4LogicalVolume* cad_fc_support_logical;
     G4LogicalVolume* cad_gem_frame_logical;
-    G4LogicalVolume* cad_cameras_logical;
-    G4LogicalVolume* cad_lenses_logical;
-    G4LogicalVolume* cad_lenses_ext_logical;
-    G4LogicalVolume* cad_pmts_logical;
     
 
     // Physical volumes
@@ -205,21 +184,14 @@ class CYGNODetectorConstruction : public G4VUserDetectorConstruction
     G4VPhysicalVolume* TPC_phys;
     G4VPhysicalVolume* CYGNO_phys;
     
-    G4VPhysicalVolume* cad_water_shield_physical;
     G4VPhysicalVolume* cad_pe_shield_physical;
-    G4VPhysicalVolume* cad_cu_shield_physical;
-    G4VPhysicalVolume* cad_camera_shield_physical;
+    G4VPhysicalVolume* cad_cu_outer_shield_physical;
+    G4VPhysicalVolume* cad_cu_inner_shield_physical;
     G4VPhysicalVolume* cad_acrylic_box_physical;
     G4VPhysicalVolume* cad_cathode_physical;
-    G4VPhysicalVolume* cad_cathode_frame_physical;
     G4VPhysicalVolume* cad_fc_sheet_physical;
-    G4VPhysicalVolume* cad_internal_structure_physical;
-    G4VPhysicalVolume* cad_gem_physical;
+    G4VPhysicalVolume* cad_fc_support_physical;
     G4VPhysicalVolume* cad_gem_frame_physical;
-    G4VPhysicalVolume* cad_cameras_physical;
-    G4VPhysicalVolume* cad_lenses_physical;
-    G4VPhysicalVolume* cad_lenses_ext_physical;
-    G4VPhysicalVolume* cad_pmts_physical;
 
     //CYGNO sensitive detector
     CYGNOSensitiveDetector * CYGNOSD;

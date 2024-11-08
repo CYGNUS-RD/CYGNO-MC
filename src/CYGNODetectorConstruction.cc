@@ -45,7 +45,7 @@
 #include "CYGNOVolumes.hh"
 
 CYGNODetectorConstruction::CYGNODetectorConstruction() :
-   CYGNOGeomPath("../geometry/cygno_04_v2/"),
+   CYGNOGeomPath("../geometry/cygno_04_v3/"),
    rockThicknessOuter(-999*m),
    rockThicknessInner(-999*m),
    CYGNOLab("NoCave"),
@@ -255,9 +255,9 @@ G4VPhysicalVolume* CYGNODetectorConstruction::Construct()
         
 	//FIXME
 	//same as TPC gas
-	AirBox_x = 1.65*m; //2.65*m;
-        AirBox_y = 1.15*m; //1.45*m;
-        AirBox_z = 0.9*m; //1.45*m;        
+	AirBox_x = 7.*m; //2.65*m;
+        AirBox_y = 7.*m; //1.45*m;
+        AirBox_z = 7.*m; //1.45*m;        
         
 	tr_InsideVolume = G4ThreeVector(0.,0.,0.);
         rot_InsideVolume = G4RotationMatrix();		
@@ -385,166 +385,101 @@ G4VPhysicalVolume* CYGNODetectorConstruction::Construct()
     //**********************************************************************
 
     char namestl[50];
-    sprintf(namestl,"%s/water_shield.stl",CYGNOGeomPath.c_str());
+    sprintf(namestl,"%s/OuterShieldCu.stl",CYGNOGeomPath.c_str());
     G4cout << namestl << G4endl;
     ifstream infile(CYGNOGeomPath.c_str());
     if (infile.good())
-    	mesh_water_shield = new CADMesh(namestl);    
-    sprintf(namestl,"%s/pe_shield.stl",CYGNOGeomPath.c_str());
+    	mesh_cu_outer_shield = new CADMesh(namestl);    
+    sprintf(namestl,"%s/InnerShieldCu.stl",CYGNOGeomPath.c_str());
+    G4cout << namestl << G4endl;
+    if (infile.good())
+    	mesh_cu_inner_shield = new CADMesh(namestl);    
+    sprintf(namestl,"%s/PEBase.stl",CYGNOGeomPath.c_str());
     G4cout << namestl << G4endl;
     if (infile.good())
     	mesh_pe_shield = new CADMesh(namestl);    
-    sprintf(namestl,"%s/shield_Cu.stl",CYGNOGeomPath.c_str());
+    sprintf(namestl,"%s/PMMABox.stl",CYGNOGeomPath.c_str());
     G4cout << namestl << G4endl;
     if (infile.good())
-    	mesh_cu_shield = new CADMesh(namestl);    
-    sprintf(namestl,"%s/camera_shield.stl",CYGNOGeomPath.c_str());
+    	mesh_acrylic_box = new CADMesh(namestl);    
+    sprintf(namestl,"%s/FieldCage.stl",CYGNOGeomPath.c_str());
     G4cout << namestl << G4endl;
     if (infile.good())
-    	mesh_camera_shield = new CADMesh(namestl);    
-    sprintf(namestl,"%s/cameras.stl",CYGNOGeomPath.c_str());
+    	mesh_fc_sheet = new CADMesh(namestl);    
+    sprintf(namestl,"%s/FCSupport.stl",CYGNOGeomPath.c_str());
     G4cout << namestl << G4endl;
     if (infile.good())
-    	mesh_cameras = new CADMesh(namestl);    
-    sprintf(namestl,"%s/lenses_ext.stl",CYGNOGeomPath.c_str());
+    	mesh_fc_support = new CADMesh(namestl);    
+    sprintf(namestl,"%s/Cathode.stl",CYGNOGeomPath.c_str());
     G4cout << namestl << G4endl;
     if (infile.good())
-    	mesh_lenses_ext = new CADMesh(namestl);    
-    sprintf(namestl,"%s/lenses.stl",CYGNOGeomPath.c_str());
+    	mesh_cathode = new CADMesh(namestl);    
+    sprintf(namestl,"%s/GemFrame.stl",CYGNOGeomPath.c_str());
     G4cout << namestl << G4endl;
     if (infile.good())
-    	mesh_lenses = new CADMesh(namestl);    
-    sprintf(namestl,"%s/pmts.stl",CYGNOGeomPath.c_str());
-    G4cout << namestl << G4endl;
-    if (infile.good())
-    	mesh_pmts = new CADMesh(namestl);    
-    sprintf(namestl,"%s/acrylic_box.stl",CYGNOGeomPath.c_str());
-    G4cout << namestl << G4endl;
-    if (infile.good())
-      mesh_acrylic_box = new CADMesh(namestl);
-    sprintf(namestl,"%s/cathode.stl",CYGNOGeomPath.c_str());
-    G4cout << namestl << G4endl;
-    if (infile.good())
-    	mesh_cathode = new CADMesh(namestl);
-    sprintf(namestl,"%s/cathode_frame.stl",CYGNOGeomPath.c_str());
-    G4cout << namestl << G4endl;
-    if (infile.good())
-    	mesh_cathode_frame = new CADMesh(namestl);
-    sprintf(namestl,"%s/fc_sheet.stl",CYGNOGeomPath.c_str());
-    G4cout << namestl << G4endl;
-    if (infile.good())
-      mesh_fc_sheet = new CADMesh(namestl);
-    sprintf(namestl,"%s/internal_structure.stl",CYGNOGeomPath.c_str());
-    G4cout << namestl << G4endl;
-    if (infile.good())
-      mesh_internal_structure = new CADMesh(namestl);
-    sprintf(namestl,"%s/gems.stl",CYGNOGeomPath.c_str());
-    G4cout << namestl << G4endl;
-    if (infile.good())
-      mesh_gem= new CADMesh(namestl);  
-    sprintf(namestl,"%s/gem_frame.stl",CYGNOGeomPath.c_str());
-    G4cout << namestl << G4endl;     
-    if (infile.good())
-      mesh_gem_frame = new CADMesh(namestl); 
+    	mesh_gem_frame = new CADMesh(namestl);    
 
     if (infile.good()) { 
 
-      mesh_water_shield->SetScale(mm);
+      mesh_cu_outer_shield->SetScale(mm);
+      mesh_cu_inner_shield->SetScale(mm);
       mesh_pe_shield->SetScale(mm);
-      mesh_cu_shield->SetScale(mm);
-      mesh_camera_shield->SetScale(mm);
-      mesh_cameras->SetScale(mm);
-      mesh_lenses_ext->SetScale(mm);
-      mesh_lenses->SetScale(mm);
-      mesh_pmts->SetScale(mm);
       mesh_acrylic_box->SetScale(mm);
-      mesh_cathode->SetScale(mm);
-      mesh_cathode_frame->SetScale(mm);
       mesh_fc_sheet->SetScale(mm);
-      mesh_internal_structure->SetScale(mm);
-      mesh_gem->SetScale(mm);
+      mesh_fc_support->SetScale(mm);
+      mesh_cathode->SetScale(mm);
       mesh_gem_frame->SetScale(mm);
-   
-      //water shield
-      cad_water_shield_solid = mesh_water_shield->TessellatedMesh();
-      cad_water_shield_logical = new G4LogicalVolume(cad_water_shield_solid, CYGNOMaterials->Material("Water"), "cad_water_shield_logical");
-      cad_water_shield_logical->SetVisAttributes(CYGNOMaterials->VisAttributes("Water"));
+      
       
       //polyethilene shield base
       cad_pe_shield_solid = mesh_pe_shield->TessellatedMesh();
       cad_pe_shield_logical = new G4LogicalVolume(cad_pe_shield_solid, CYGNOMaterials->Material("PE"), "cad_pe_shield_logical");
       cad_pe_shield_logical->SetVisAttributes(CYGNOMaterials->VisAttributes("PE"));
 
-      //copper shield lateral
-      cad_cu_shield_solid = mesh_cu_shield->TessellatedMesh();
-      cad_cu_shield_logical = new G4LogicalVolume(cad_cu_shield_solid, CYGNOMaterials->Material("Cu"), "cad_cu_shield_logical");
-      cad_cu_shield_logical->SetVisAttributes(CYGNOMaterials->VisAttributes("Cu"));
+      //copper shield outer layer (OPERA)
+      cad_cu_outer_shield_solid = mesh_cu_outer_shield->TessellatedMesh();
+      cad_cu_outer_shield_logical = new G4LogicalVolume(cad_cu_outer_shield_solid, CYGNOMaterials->Material("Cu"), "cad_cu_outer_shield_logical");
+      cad_cu_outer_shield_logical->SetVisAttributes(CYGNOMaterials->VisAttributes("Cu"));
       
-      //copper shield cameras
-      cad_camera_shield_solid = mesh_camera_shield->TessellatedMesh();
-      cad_camera_shield_logical = new G4LogicalVolume(cad_camera_shield_solid, CYGNOMaterials->Material("Cu"), "cad_camera_shield_logical");
-      cad_camera_shield_logical->SetVisAttributes(CYGNOMaterials->VisAttributes("Cu"));
-      
-      //cameras
-      cad_cameras_solid = mesh_cameras->TessellatedMesh();
-      cad_cameras_logical = new G4LogicalVolume(cad_cameras_solid, CYGNOMaterials->Material("Camera"), "cad_cameras_logical");
-      cad_cameras_logical->SetVisAttributes(CYGNOMaterials->VisAttributes("Camera"));
-      
-      //lenses external part
-      cad_lenses_ext_solid = mesh_lenses_ext->TessellatedMesh();
-      cad_lenses_ext_logical = new G4LogicalVolume(cad_lenses_ext_solid, CYGNOMaterials->Material("Camera"), "cad_lenses_ext_logical");
-      cad_lenses_ext_logical->SetVisAttributes(CYGNOMaterials->VisAttributes("Camera"));
-      
-      //lenses
-      cad_lenses_solid = mesh_lenses->TessellatedMesh();
-      cad_lenses_logical = new G4LogicalVolume(cad_lenses_solid, CYGNOMaterials->Material("Camera"), "cad_lenses_logical");
-      cad_lenses_logical->SetVisAttributes(CYGNOMaterials->VisAttributes("Camera"));
-      
-      //PMTs
-      cad_pmts_solid = mesh_pmts->TessellatedMesh();
-      cad_pmts_logical = new G4LogicalVolume(cad_pmts_solid, CYGNOMaterials->Material("PMT"), "cad_pmts_logical");
-      cad_pmts_logical->SetVisAttributes(CYGNOMaterials->VisAttributes("PMT"));
-      
-      //internal structure
-      cad_internal_structure_solid = mesh_internal_structure->TessellatedMesh();
-      cad_internal_structure_logical = new G4LogicalVolume(cad_internal_structure_solid, CYGNOMaterials->Material("Perspex"), "cad_internal_structure_logical", 0, 0, 0);
-      cad_internal_structure_logical->SetVisAttributes(CYGNOMaterials->VisAttributes("Perspex"));
+      //copper shield inner layer (Schreiber)
+      cad_cu_inner_shield_solid = mesh_cu_inner_shield->TessellatedMesh();
+      cad_cu_inner_shield_logical = new G4LogicalVolume(cad_cu_inner_shield_solid, CYGNOMaterials->Material("Cu"), "cad_cu_inner_shield_logical");
+      cad_cu_inner_shield_logical->SetVisAttributes(CYGNOMaterials->VisAttributes("Cu"));
       
       //acrylic box
       cad_acrylic_box_solid = mesh_acrylic_box->TessellatedMesh();
       cad_acrylic_box_logical = new G4LogicalVolume(cad_acrylic_box_solid, CYGNOMaterials->Material("Perspex"), "cad_acrylic_box_logical", 0, 0, 0);
       cad_acrylic_box_logical->SetVisAttributes(CYGNOMaterials->VisAttributes("Perspex"));
-
+      
       //field cage resistive sheet
       cad_fc_sheet_solid = mesh_fc_sheet->TessellatedMesh();
       cad_fc_sheet_logical = new G4LogicalVolume(cad_fc_sheet_solid, CYGNOMaterials->Material("Perspex"), "cad_fc_sheet_logical", 0, 0, 0);
       cad_fc_sheet_logical->SetVisAttributes(CYGNOMaterials->VisAttributes("Perspex"));
+      
+      //field cage support
+      cad_fc_support_solid = mesh_fc_support->TessellatedMesh();
+      cad_fc_support_logical = new G4LogicalVolume(cad_fc_support_solid, CYGNOMaterials->Material("Perspex"), "cad_fc_support_logical", 0, 0, 0);
+      cad_fc_support_logical->SetVisAttributes(CYGNOMaterials->VisAttributes("Perspex"));
 
       //GEM frame
       cad_gem_frame_solid = mesh_gem_frame->TessellatedMesh();
       cad_gem_frame_logical = new G4LogicalVolume(cad_gem_frame_solid, CYGNOMaterials->Material("Perspex"), "cad_gem_frame_logical", 0, 0, 0);
       cad_gem_frame_logical->SetVisAttributes(CYGNOMaterials->VisAttributes("Perspex"));
-      
 
-      //GEM foils
-      cad_gem_solid = mesh_gem->TessellatedMesh();
-      cad_gem_logical = new G4LogicalVolume(cad_gem_solid, CYGNOMaterials->Material("GEM"), "cad_gem_logical", 0, 0, 0); //GEM material is an effective material of kapton + copper 
-      
       
       //cathode
       cad_cathode_solid = mesh_cathode->TessellatedMesh();
       cad_cathode_logical = new G4LogicalVolume(cad_cathode_solid, CYGNOMaterials->Material("Cu"), "cad_cathode_logical", 0, 0, 0);
       cad_cathode_logical->SetVisAttributes(CYGNOMaterials->VisAttributes("Cu"));
-
-      //cathode frame
-      cad_cathode_frame_solid = mesh_cathode_frame->TessellatedMesh();
-      cad_cathode_frame_logical = new G4LogicalVolume(cad_cathode_frame_solid, CYGNOMaterials->Material("Perspex"), "cad_cathode_frame_logical", 0, 0, 0);
-      cad_cathode_frame_logical->SetVisAttributes(CYGNOMaterials->VisAttributes("Perspex"));
-   
+    }
+    else{
+      G4cout << "--------------------------------------" << G4endl;
+      G4cout << "WARNING: CAD file not valid!" << G4endl;
+      G4cout << "--------------------------------------" << G4endl;
     }
 
     //TPC gas
-    G4double TPC_x = 1160.*mm;
+    G4double TPC_x = 1100.*mm;
     G4double TPC_y = 960*mm;
     G4double TPC_z = 650*mm;
       
@@ -624,65 +559,47 @@ G4VPhysicalVolume* CYGNODetectorConstruction::Construct()
     else if (CYGNOShielding == "CYGNO_04") 
     {   
         // ----------------------------------- Volume placements
-    	tr_cad_shields=G4ThreeVector(0.,97*cm,0.);
+    	//tr_cad_shields=G4ThreeVector(0.,97*cm,0.);
+    	tr_cad_shields=G4ThreeVector(0.,0.,47.*cm);
     	rot_cad_shields = G4RotationMatrix();
     	rot_cad_shields.rotateX(-90.*deg);
     	rot_cad_shields.rotateY(-90.*deg);
-	if (infile.good()) { 
-         	cad_water_shield_physical = new G4PVPlacement(G4Transform3D(rot_cad_shields,tr_cad_shields), 
-         	  	    cad_water_shield_logical,"cad_water_shield_physical", AirBox_log, false, 0, true);
-         	cad_pe_shield_physical = new G4PVPlacement(G4Transform3D(rot_cad_shields,tr_cad_shields), 
-         	  	    cad_pe_shield_logical,"cad_pe_shield_physical", AirBox_log, false, 0, true);
-         	cad_cu_shield_physical = new G4PVPlacement(G4Transform3D(rot_cad_shields,tr_cad_shields), 
-         	  	    cad_cu_shield_logical,"cad_cu_shield_physical", AirBox_log, false, 0, true);
-         	cad_camera_shield_physical = new G4PVPlacement(G4Transform3D(rot_cad_shields,tr_cad_shields), 
-         	  	    cad_camera_shield_logical,"cad_camera_shield_physical", AirBox_log, false, 0, true);
-           
-            //cameras
-            cad_cameras_physical = new G4PVPlacement(G4Transform3D(rot_cad_shields,tr_cad_shields), 
-              	    cad_cameras_logical,"cad_cameras_physical", AirBox_log, false, 0, true);
-            cad_lenses_physical = new G4PVPlacement(G4Transform3D(rot_cad_shields,tr_cad_shields), 
-              	    cad_lenses_logical,"cad_lenses_physical", AirBox_log, false, 0, true);
-            cad_lenses_ext_physical = new G4PVPlacement(G4Transform3D(rot_cad_shields,tr_cad_shields), 
-              	    cad_lenses_ext_logical,"cad_lenses_ext_physical", AirBox_log, false, 0, true);
-            cad_pmts_physical = new G4PVPlacement(G4Transform3D(rot_cad_shields,tr_cad_shields), 
-              	    cad_pmts_logical,"cad_pmts_physical", AirBox_log, false, 0, true);
+    	cad_pe_shield_physical = new G4PVPlacement(G4Transform3D(rot_cad_shields,tr_cad_shields), 
+    	  	    cad_pe_shield_logical,"cad_pe_shield_physical", AirBox_log, false, 0, true);
+    	cad_cu_outer_shield_physical = new G4PVPlacement(G4Transform3D(rot_cad_shields,tr_cad_shields), 
+    	  	    cad_cu_outer_shield_logical,"cad_cu_outer_shield_physical", AirBox_log, false, 0, true);
+    	cad_cu_inner_shield_physical = new G4PVPlacement(G4Transform3D(rot_cad_shields,tr_cad_shields), 
+    	  	    cad_cu_inner_shield_logical,"cad_cu_inner_shield_physical", AirBox_log, false, 0, true);
 
-	}
-        
+    
     }
     G4ThreeVector  size;
 
-    tr_cad=G4ThreeVector(0.,97*cm,0.);
+    tr_cad=G4ThreeVector(0.,0.,47.*cm);
+    //tr_cad=G4ThreeVector(0.,97*cm,0.);
     rot_cad = G4RotationMatrix();
     rot_cad.rotateX(-90.*deg);
     rot_cad.rotateY(-90.*deg);
     rot = G4RotationMatrix();
+    cad_acrylic_box_physical = new G4PVPlacement(G4Transform3D(rot_cad,tr_cad), 
+      	    cad_acrylic_box_logical,"cad_acrylic_box_physical", AirBox_log, false, 0, true);
     
-    if (infile.good()) { 
-        
-        cad_acrylic_box_physical = new G4PVPlacement(G4Transform3D(rot_cad,tr_cad), 
-          	    cad_acrylic_box_logical,"cad_acrylic_box_physical", AirBox_log, false, 0, true);
-        
-        //TPC gas
-        tr=G4ThreeVector(0.,0.,0.);
-        TPC_phys = new G4PVPlacement(G4Transform3D(rot,tr),
-          	    TPC_log,"TPC_gas", AirBox_log, false, 0, true);
-        
-        // internal parts
-        cad_internal_structure_physical = new G4PVPlacement(G4Transform3D(rot_cad,tr_cad), 
-          	    cad_internal_structure_logical,"cad_internal_structure_physical", TPC_log, false, 0, true);
-        cad_fc_sheet_physical = new G4PVPlacement(G4Transform3D(rot_cad,tr_cad), 
-          	    cad_fc_sheet_logical,"cad_fc_sheet_physical", TPC_log, false, 0, true);
-        cad_gem_frame_physical = new G4PVPlacement(G4Transform3D(rot_cad,tr_cad), 
-          	    cad_gem_frame_logical,"cad_gem_frame_physical", TPC_log, false, 0, true);
-        cad_gem_physical = new G4PVPlacement(G4Transform3D(rot_cad,tr_cad), 
-          	    cad_gem_logical,"cad_gem_physical", TPC_log, false, 0, true);
-        cad_cathode_physical = new G4PVPlacement(G4Transform3D(rot_cad,tr_cad), 
-          	    cad_cathode_logical,"cad_cathode_physical", TPC_log, false, 0, true);
-        cad_cathode_frame_physical = new G4PVPlacement(G4Transform3D(rot_cad,tr_cad), 
-          	    cad_cathode_frame_logical,"cad_cathode_frame_physical", TPC_log, false, 0, true);
-    } 
+   
+    //TPC gas
+    tr=G4ThreeVector(0.,0.,0.);
+    TPC_phys = new G4PVPlacement(G4Transform3D(rot,tr),
+      	    TPC_log,"TPC_gas", AirBox_log, false, 0, true);
+    
+    // internal parts
+    cad_fc_support_physical = new G4PVPlacement(G4Transform3D(rot_cad,tr_cad), 
+      	    cad_fc_support_logical,"cad_fc_support_physical", TPC_log, false, 0, true);
+    cad_fc_sheet_physical = new G4PVPlacement(G4Transform3D(rot_cad,tr_cad), 
+      	    cad_fc_sheet_logical,"cad_fc_sheet_physical", TPC_log, false, 0, true);
+    cad_gem_frame_physical = new G4PVPlacement(G4Transform3D(rot_cad,tr_cad), 
+      	    cad_gem_frame_logical,"cad_gem_frame_physical", TPC_log, false, 0, true);
+    cad_cathode_physical = new G4PVPlacement(G4Transform3D(rot_cad,tr_cad), 
+      	    cad_cathode_logical,"cad_cathode_physical", TPC_log, false, 0, true);
+    
     //CYGNO sensitive regions
     tr_CYGNO_gas_0=G4ThreeVector(-10-CYGNO_x/2.,0.,0.);
     tr_CYGNO_gas_1=G4ThreeVector(10+CYGNO_x/2.,0.,0.);
@@ -747,24 +664,17 @@ void CYGNODetectorConstruction::SaveMassAndDensity()
   else if (CYGNOShielding=="CYGNO_04"){
   	ifstream infile(CYGNOGeomPath.c_str());
   	if (infile.good()) {
-  	  CYGNOProperties->AddVolumeNameMassAndDensity(cad_water_shield_logical);
   	  CYGNOProperties->AddVolumeNameMassAndDensity(cad_pe_shield_logical);
-  	  CYGNOProperties->AddVolumeNameMassAndDensity(cad_cu_shield_logical);
-  	  CYGNOProperties->AddVolumeNameMassAndDensity(cad_camera_shield_logical);
+  	  CYGNOProperties->AddVolumeNameMassAndDensity(cad_cu_outer_shield_logical);
+  	  CYGNOProperties->AddVolumeNameMassAndDensity(cad_cu_inner_shield_logical);
   	}
   }
   ifstream infile(CYGNOGeomPath.c_str());
   if (infile.good()) {
     CYGNOProperties->AddVolumeNameMassAndDensity(cad_acrylic_box_logical);
-    CYGNOProperties->AddVolumeNameMassAndDensity(cad_internal_structure_logical);
-    CYGNOProperties->AddVolumeNameMassAndDensity(cad_cameras_logical);
-    CYGNOProperties->AddVolumeNameMassAndDensity(cad_lenses_ext_logical);
-    CYGNOProperties->AddVolumeNameMassAndDensity(cad_lenses_logical);
-    CYGNOProperties->AddVolumeNameMassAndDensity(cad_pmts_logical);
+    CYGNOProperties->AddVolumeNameMassAndDensity(cad_fc_support_logical);
     CYGNOProperties->AddVolumeNameMassAndDensity(cad_gem_frame_logical);
-    CYGNOProperties->AddVolumeNameMassAndDensity(cad_gem_logical);
     CYGNOProperties->AddVolumeNameMassAndDensity(cad_cathode_logical);
-    CYGNOProperties->AddVolumeNameMassAndDensity(cad_cathode_frame_logical);
     CYGNOProperties->AddVolumeNameMassAndDensity(cad_fc_sheet_logical);
   }
   
@@ -817,20 +727,13 @@ void CYGNODetectorConstruction::UpdateGeometry()
   TPC_log=0;
   CYGNO_log=0;
 
-  cad_water_shield_logical=0;
   cad_pe_shield_logical=0;
-  cad_cu_shield_logical=0;
-  cad_camera_shield_logical=0;
-  cad_cameras_logical=0;
-  cad_lenses_logical=0;
-  cad_lenses_ext_logical=0;
-  cad_pmts_logical=0;
-  cad_internal_structure_logical=0;
+  cad_cu_outer_shield_logical=0;
+  cad_cu_inner_shield_logical=0;
+  cad_fc_support_logical=0;
   cad_acrylic_box_logical=0;
   cad_gem_frame_logical=0;
-  cad_gem_logical=0;
   cad_cathode_logical=0;
-  cad_cathode_frame_logical=0;
   cad_fc_sheet_logical=0;
 
 
