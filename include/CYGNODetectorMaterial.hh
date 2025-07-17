@@ -74,6 +74,7 @@ G4Material* He_gas;
 G4Material* CF4_gas; 
 G4Material* Kapton; 
 G4Material* GEM; 
+G4Material* FC; 
 
 
 G4VisAttributes* PEVis;

@@ -453,8 +453,8 @@ G4VPhysicalVolume* CYGNODetectorConstruction::Construct()
       
       //field cage resistive sheet
       cad_fc_sheet_solid = mesh_fc_sheet->TessellatedMesh();
-      cad_fc_sheet_logical = new G4LogicalVolume(cad_fc_sheet_solid, CYGNOMaterials->Material("Perspex"), "cad_fc_sheet_logical", 0, 0, 0);
-      cad_fc_sheet_logical->SetVisAttributes(CYGNOMaterials->VisAttributes("Perspex"));
+      cad_fc_sheet_logical = new G4LogicalVolume(cad_fc_sheet_solid, CYGNOMaterials->Material("FC"), "cad_fc_sheet_logical", 0, 0, 0);
+      cad_fc_sheet_logical->SetVisAttributes(CYGNOMaterials->VisAttributes("FC"));
       
       //field cage support
       cad_fc_support_solid = mesh_fc_support->TessellatedMesh();

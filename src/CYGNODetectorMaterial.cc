@@ -197,6 +197,12 @@ void CYGNODetectorMaterial::ConstructMaterials(){
     GEM->AddMaterial(Kapton, fracMass=0.44);
     GEM->AddMaterial(Cu, fracMass=0.56);
 
+    // fc (kapton+Cu)
+    density = 3.37*g/cm3; //FC effective material kapton (50 um thick) +Cu (35 um thick, 1 cm wide strips, 2 cm distance between strips).  
+    FC = new G4Material("FC", density, ncomponents=2);
+    FC->AddMaterial(Kapton, fracMass=0.31);
+    FC->AddMaterial(Cu, fracMass=0.69);
+
 
     
     Vacuum = new G4Material("Vacuum",1.,massOfMole, density= 1.e-25*g/cm3,kStateGas,temperature, pressure);
@@ -275,6 +281,7 @@ G4Material* CYGNODetectorMaterial::Material(G4String what)
   if(what == "PMT")               material = PMT;
   if(what == "Kapton")            material = Kapton;
   if(what == "GEM")               material = GEM;
+  if(what == "FC")               material = FC;
  
   return material;
 }
