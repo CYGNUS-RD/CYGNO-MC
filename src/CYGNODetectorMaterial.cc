@@ -198,10 +198,10 @@ void CYGNODetectorMaterial::ConstructMaterials(){
     GEM->AddMaterial(Cu, fracMass=0.56);
 
     // fc (kapton+Cu)
-    density = 3.37*g/cm3; //FC effective material kapton (50 um thick) +Cu (35 um thick, 1 cm wide strips, 2 cm distance between strips).  
+    density = 2.58*g/cm3; //FC effective material kapton (50 um thick) +Cu (35 um thick, 1 cm wide strips, 1 cm gap). Taken into account the presence hf holes in the kapton part. The CAD model implements a single foil of 100 um.  
     FC = new G4Material("FC", density, ncomponents=2);
-    FC->AddMaterial(Kapton, fracMass=0.31);
-    FC->AddMaterial(Cu, fracMass=0.69);
+    FC->AddMaterial(Kapton, fracMass=0.285);
+    FC->AddMaterial(Cu, fracMass=0.715);
 
 
     
