@@ -28,7 +28,7 @@
 /tracking/verbose 0
 
 #Output file name
-/CYGNO/outfile LIME_radon_Po214_cathode
+/CYGNO/outfile LIME_radon_Bi214_cathode
 /random/setSeeds 654398224 471982701
 
 #Seleziona il numero di particelle
