@@ -1165,19 +1165,19 @@ G4VPhysicalVolume* CYGNODetectorConstruction::Construct()
         	    cad_LIMEendPMT_logical,"cad_LIMEendPMT_physical", AirBox_log, false, 0, true);
     }
     tr=G4ThreeVector(0.,0.,0.);
-    tr_collimator=G4ThreeVector(0.,0.5*TPC_y+collimator_thick,0.);
+    tr_collimator=G4ThreeVector(22.*mm,0.5*TPC_y+collimator_thick,0.);
     tr_source=G4ThreeVector(0.,collimator_thick+0.5*source_thick+10.*mm,0.);
-    tr_source_case=G4ThreeVector(0.,0.5*TPC_y+source_case_full_thick,0.);
+    tr_source_case=G4ThreeVector(22.*mm,0.5*TPC_y+source_case_full_thick,0.);
     G4RotationMatrix* rot_source = new G4RotationMatrix; 
     rot_source->rotateX(90.*deg);  
     
     //FIXME
     //source 55Fe
-    source_case_phys = new G4PVPlacement(G4Transform3D(*rot_source,-1*tr_CYGNO_gas_1-tr_airbox+tr_source_case), source_case_log,"source_case", AirBox_log, false, 0, true);
+    source_case_phys = new G4PVPlacement(G4Transform3D(*rot_source,tr_tpc-tr_airbox+tr_source_case), source_case_log,"source_case", AirBox_log, false, 0, true);
 
-    source_phys = new G4PVPlacement(G4Transform3D(*rot_source,-1*tr_CYGNO_gas_1-tr_airbox+tr_collimator+tr_source), source_log,"source", AirBox_log, false, 0, true);
+    source_phys = new G4PVPlacement(G4Transform3D(*rot_source,tr_tpc-tr_airbox+tr_collimator+tr_source), source_log,"source", AirBox_log, false, 0, true);
     //collimator source 55Fe
-    collimator_phys = new G4PVPlacement(G4Transform3D(*rot_source,-1*tr_CYGNO_gas_1-tr_airbox+tr_collimator),
+    collimator_phys = new G4PVPlacement(G4Transform3D(*rot_source,tr_tpc-tr_airbox+tr_collimator),
 		    collimator_log,"collimator", AirBox_log, false, 0, true);
 
     TPC_phys = new G4PVPlacement(G4Transform3D(rot,tr_tpc-tr_airbox),
