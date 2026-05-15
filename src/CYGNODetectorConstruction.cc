@@ -839,13 +839,13 @@ G4VPhysicalVolume* CYGNODetectorConstruction::Construct()
     source_case_log = new G4LogicalVolume(source_case,CYGNOMaterials->Material("Pb"),name_log,0,0,0);
     
     //source collimator
-    G4double collimator_Odiam = 12.*mm;
+    G4double collimator_Odiam = 20.*mm;
     G4double collimator_thick = 2*mm;
 
     G4Tubs* collimator_full = new G4Tubs("collimator_full_solid",0.,0.5*collimator_Odiam,collimator_thick,0.*deg, 360.*deg);
     
     //source collimator_hole
-    G4double collimator_hole_x = 0.1*mm;
+    G4double collimator_hole_x = 1*mm;
     G4double collimator_hole_y = 2*mm;
     G4double collimator_hole_z = 10*mm;
     G4Box* collimator_hole = new G4Box("collimator_hole_solid",0.5*collimator_hole_x,0.5*collimator_hole_y,0.5*collimator_hole_z);
