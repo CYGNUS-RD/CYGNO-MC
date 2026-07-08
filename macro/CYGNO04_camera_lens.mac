@@ -1,0 +1,34 @@
+#/CYGNO/pathtocad /nfs/cygno/geometry/lime/
+
+# GENERATION OF RADIOACTIVE PARTICLES
+# define particle or ion 
+/gps/particle ion
+/gps/ion 19 40
+# define energy (set 0 for radioactive decaying nuclei)
+/gps/energy 0. keV
+/gps/pos/shape Para
+/gps/pos/centre 0. 0. -125. cm
+/gps/pos/halfx 15 cm
+/gps/pos/halfy 40 cm
+/gps/pos/halfz 15 cm
+#
+# to use if there is in the code a Source volume 
+# 
+/gps/pos/type Volume
+/gps/pos/confine camera_lens_L
+#
+#
+# Physics: radioactive decay enabled
+/process/had/rdm/thresholdForVeryLongDecayTime 1.0e+60 year
+/run/initialize
+#change these for debug
+/run/verbose 0
+/event/verbose 0
+/tracking/verbose 0
+#Output file name
+/CYGNO/outfile 40K_camera_lens
+/random/setSeeds 575841909 838392975
+#/process/em/deexcitationIgnoreCut true
+
+# define number of events to be generated
+/run/beamOn 10000
