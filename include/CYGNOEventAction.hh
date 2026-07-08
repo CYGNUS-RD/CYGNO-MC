@@ -33,6 +33,10 @@ class CYGNOEventAction : public G4UserEventAction
   std::vector<G4double>& Get_x_hits() { return v_x_hits; };
   std::vector<G4double>& Get_y_hits() { return v_y_hits; };
   std::vector<G4double>& Get_z_hits() { return v_z_hits; };
+  std::vector<G4int>& Get_parentID_hits() { return v_parentID_hits; };
+  std::vector<G4int>& Get_trackID_hits() { return v_trackID_hits; };
+  std::vector<G4double>& Get_time_hits() { return v_time_hits; };
+  std::vector<G4double>& Get_kinEne_hits() { return v_kinEne_hits; };
 
 
   private: 
@@ -56,6 +60,11 @@ class CYGNOEventAction : public G4UserEventAction
   std::vector<G4double> v_x_hits;
   std::vector<G4double> v_y_hits;
   std::vector<G4double> v_z_hits;
+  std::vector<G4int> v_parentID_hits;
+  std::vector<G4int> v_trackID_hits;
+  std::vector<G4double> v_kinEne_hits;
+  std::vector<G4double> v_time_hits;
+
 };
 
 #endif

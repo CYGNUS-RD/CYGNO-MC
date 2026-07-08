@@ -84,7 +84,11 @@ void CYGNORunAction::Book()
   man->CreateNtupleDColumn("x_hits", fEventAction -> Get_x_hits());
   man->CreateNtupleDColumn("y_hits", fEventAction -> Get_y_hits());
   man->CreateNtupleDColumn("z_hits", fEventAction -> Get_z_hits());
-  man->FinishNtuple();
+  man->CreateNtupleIColumn("parentID_hits", fEventAction -> Get_parentID_hits());
+  man->CreateNtupleIColumn("trackID_hits", fEventAction -> Get_trackID_hits());
+  man->CreateNtupleDColumn("kinEne_hits", fEventAction -> Get_kinEne_hits());
+  man->CreateNtupleDColumn("time_hits", fEventAction -> Get_time_hits());
+man->FinishNtuple();
 
   // Open an output file
   man->OpenFile(FileName);

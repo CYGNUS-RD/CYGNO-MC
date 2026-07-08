@@ -43,6 +43,16 @@ void CYGNOEventAction::BeginOfEventAction(const G4Event* evt)
     G4SDManager * SDman = G4SDManager::GetSDMpointer();
     CYGNOID = SDman->GetCollectionID("CYGNOCollection");
   } 
+
+  G4int evtID = evt->GetEventID();
+
+  if (evtID % 1000 == 0) {
+	       G4cout << "Thread "
+               << G4Threading::G4GetThreadId()
+               << " processing event "
+               << evtID
+               << G4endl;
+    }
 }
 
 void CYGNOEventAction::EndOfEventAction(const G4Event* evt)
@@ -87,6 +97,11 @@ void CYGNOEventAction::EndOfEventAction(const G4Event* evt)
   v_x_hits.clear();
   v_y_hits.clear();
   v_z_hits.clear();
+  v_parentID_hits.clear();
+  v_trackID_hits.clear();
+  v_kinEne_hits.clear();
+  v_time_hits.clear();
+
 
   if(CYGNOHC) {
     CYGNO_hits = CYGNOHC->entries();
@@ -109,6 +124,10 @@ void CYGNOEventAction::EndOfEventAction(const G4Event* evt)
         v_x_hits.push_back((*CYGNOHC)[i]->GetPos().x());
         v_y_hits.push_back((*CYGNOHC)[i]->GetPos().y());
         v_z_hits.push_back((*CYGNOHC)[i]->GetPos().z());
+        v_parentID_hits.push_back((*CYGNOHC)[i]->GetParentID());
+        v_trackID_hits.push_back((*CYGNOHC)[i]->GetTrackID());
+        v_kinEne_hits.push_back((*CYGNOHC)[i]->GetKineticEne());
+        v_time_hits.push_back((*CYGNOHC)[i]->GetGlobalTime());
         
 	G4double rawEdep = (*CYGNOHC)[i]->GetEdep();
         v_energyDep_hits.push_back(rawEdep);
