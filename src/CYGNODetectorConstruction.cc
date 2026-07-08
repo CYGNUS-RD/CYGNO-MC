@@ -60,7 +60,7 @@ size_t GetMemoryUsageMB()
 }
 
 CYGNODetectorConstruction::CYGNODetectorConstruction() :
-   CYGNOGeomPath("/nfs/cygno/geometry/cygno_04_v3_ASCII/"),
+   CYGNOGeomPath("../geometry/cygno_04_v3_ASCII/"),
    rockThicknessOuter(-999*m),
    rockThicknessInner(-999*m),
    //rockThicknessInner(4.*m),
@@ -560,7 +560,7 @@ G4VPhysicalVolume* CYGNODetectorConstruction::Construct()
   
     //TPC gas //FIXME (overlap with PMMA box)
     G4double TPC_x = 640.*mm;
-    G4double TPC_y = 940.*mm;
+    G4double TPC_y = 920.*mm;
     G4double TPC_z = 1060.*mm;
       
     name_phys="TPC";
@@ -579,6 +579,27 @@ G4VPhysicalVolume* CYGNODetectorConstruction::Construct()
     name_solid=name_phys+"_solid";
     G4Box* CYGNO_box = new G4Box(name_solid,0.5*CYGNO_x,0.5*CYGNO_y,0.5*CYGNO_z);
     CYGNO_log = new G4LogicalVolume(CYGNO_box,CYGNOMaterials->Material("CYGNO_gas"),name_log,0,0,0);
+
+    //camera lenses
+    G4double lens_diam = 60.*mm;
+    G4double lens_thick = 83.5*mm; //set to have a correct weight
+      
+    name_phys="camera_lens";
+    name_log=name_phys+"_log";
+    name_solid=name_phys+"_solid";
+    G4Tubs* camera_lens = new G4Tubs(name_solid,0.,0.5*lens_diam,0.5*lens_thick,0.*deg,360.*deg);
+    camera_lens_log = new G4LogicalVolume(camera_lens,CYGNOMaterials->Material("Camera"),name_log,0,0,0);
+    
+    //camera body
+    G4double camera_x = 84.*mm;
+    G4double camera_y = 84*mm; 
+    G4double camera_z = 122.3*mm; 
+      
+    name_phys="camera";
+    name_log=name_phys+"_log";
+    name_solid=name_phys+"_solid";
+    G4Box* camera = new G4Box(name_solid,0.5*camera_x,0.5*camera_y,0.5*camera_z);
+    camera_log = new G4LogicalVolume(camera,CYGNOMaterials->Material("Camera"),name_log,0,0,0);
 
 
    if (CYGNOLab == "LNGS"){
@@ -670,7 +691,38 @@ G4VPhysicalVolume* CYGNODetectorConstruction::Construct()
     //tr_CYGNO_gas_1=G4ThreeVector(TPC_x/2.-CYGNO_x/2.-50.*mm,-20.*mm,0.);
     CYGNO_phys = new G4PVPlacement(G4Transform3D(rot,tr_CYGNO_gas_1), CYGNO_log,"CYGNO_gas", TPC_log, false, 0, true);
     CYGNO_phys = new G4PVPlacement(G4Transform3D(rot,tr_CYGNO_gas_2), CYGNO_log,"CYGNO_gas", TPC_log, false, 1, true);
-          
+
+    //camera lens
+    tr_camera_lens_L0 = G4ThreeVector(0.,265.*mm,-1200.*mm);
+    tr_camera_lens_L1 = G4ThreeVector(0.,0.,-1200.*mm);
+    tr_camera_lens_L2 = G4ThreeVector(0.,-265.*mm,-1200.*mm);
+    tr_camera_lens_R0 = G4ThreeVector(0.,265.*mm,1200.*mm);
+    tr_camera_lens_R1 = G4ThreeVector(0.,0.,1200.*mm);
+    tr_camera_lens_R2 = G4ThreeVector(0.,-265.*mm,1200.*mm);
+ 
+    camera_lens_phys = new G4PVPlacement(G4Transform3D(rot,tr_camera_lens_L0), camera_lens_log,"camera_lens_L", AirBox_log, false, 0, true);
+    camera_lens_phys = new G4PVPlacement(G4Transform3D(rot,tr_camera_lens_L1), camera_lens_log,"camera_lens_L", AirBox_log, false, 1, true);
+    camera_lens_phys = new G4PVPlacement(G4Transform3D(rot,tr_camera_lens_L2), camera_lens_log,"camera_lens_L", AirBox_log, false, 2, true);
+    camera_lens_phys = new G4PVPlacement(G4Transform3D(rot,tr_camera_lens_R0), camera_lens_log,"camera_lens_R", AirBox_log, false, 0, true);
+    camera_lens_phys = new G4PVPlacement(G4Transform3D(rot,tr_camera_lens_R1), camera_lens_log,"camera_lens_R", AirBox_log, false, 1, true);
+    camera_lens_phys = new G4PVPlacement(G4Transform3D(rot,tr_camera_lens_R2), camera_lens_log,"camera_lens_R", AirBox_log, false, 2, true);
+   
+
+    //camera
+    tr_camera_L0 = G4ThreeVector(0.,265.*mm,-1200.*mm-0.5*camera_z-0.5*lens_thick);
+    tr_camera_L1 = G4ThreeVector(0.,0.,-1200.*mm-0.5*camera_z-0.5*lens_thick);
+    tr_camera_L2 = G4ThreeVector(0.,-265.*mm,-1200.*mm-0.5*camera_z-0.5*lens_thick);
+    tr_camera_R0 = G4ThreeVector(0.,265.*mm,1200.*mm+0.5*camera_z+0.5*lens_thick);
+    tr_camera_R1 = G4ThreeVector(0.,0.,1200.*mm+0.5*camera_z+0.5*lens_thick);
+    tr_camera_R2 = G4ThreeVector(0.,-265.*mm,1200.*mm+0.5*camera_z+0.5*lens_thick);
+    
+    camera_phys = new G4PVPlacement(G4Transform3D(rot,tr_camera_L0), camera_log,"camera_L", AirBox_log, false, 0, true);
+    camera_phys = new G4PVPlacement(G4Transform3D(rot,tr_camera_L1), camera_log,"camera_L", AirBox_log, false, 1, true);
+    camera_phys = new G4PVPlacement(G4Transform3D(rot,tr_camera_L2), camera_log,"camera_L", AirBox_log, false, 2, true);
+    camera_phys = new G4PVPlacement(G4Transform3D(rot,tr_camera_R0), camera_log,"camera_R", AirBox_log, false, 0, true);
+    camera_phys = new G4PVPlacement(G4Transform3D(rot,tr_camera_R1), camera_log,"camera_R", AirBox_log, false, 1, true);
+    camera_phys = new G4PVPlacement(G4Transform3D(rot,tr_camera_R2), camera_log,"camera_R", AirBox_log, false, 2, true);
+
     tr=G4ThreeVector(0.,0.,0.);
     rot = G4RotationMatrix();
     if (infile.good()){
@@ -737,8 +789,8 @@ void CYGNODetectorConstruction::SaveMassAndDensity()
   CYGNOProperties->AddVolumeNameMassAndDensity(TPC_log);
   CYGNOProperties->AddVolumeNameMassAndDensity(CYGNO_log);
   CYGNOProperties->AddVolumeNameMassAndDensity(Cathode_log);
-  //CYGNOProperties->AddVolumeNameMassAndDensity(camera_log);
-  //CYGNOProperties->AddVolumeNameMassAndDensity(camera_lens_log);
+  CYGNOProperties->AddVolumeNameMassAndDensity(camera_log);
+  CYGNOProperties->AddVolumeNameMassAndDensity(camera_lens_log);
   ifstream infile(CYGNOGeomPath.c_str());
   if (infile.good()) {
     //CYGNOProperties->AddVolumeNameMassAndDensity(cad_Cathode_logical);
@@ -810,8 +862,8 @@ void CYGNODetectorConstruction::UpdateGeometry()
   
   TPC_log=0;
   CYGNO_log=0;
-  //camera_log=0;
-  //camera_lens_log=0;
+  camera_log=0;
+  camera_lens_log=0;
   Cathode_log = 0;
 
   InsideVolume_log=0;

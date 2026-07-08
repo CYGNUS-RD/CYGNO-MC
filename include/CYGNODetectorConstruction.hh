@@ -144,6 +144,18 @@ class CYGNODetectorConstruction : public G4VUserDetectorConstruction
     G4RotationMatrix rot_cad_shield;
     G4ThreeVector tr_cad_shield;
     
+    G4ThreeVector tr_camera_L0;
+    G4ThreeVector tr_camera_L1;
+    G4ThreeVector tr_camera_L2;
+    G4ThreeVector tr_camera_R0;
+    G4ThreeVector tr_camera_R1;
+    G4ThreeVector tr_camera_R2;
+    G4ThreeVector tr_camera_lens_L0;
+    G4ThreeVector tr_camera_lens_L1;
+    G4ThreeVector tr_camera_lens_L2;
+    G4ThreeVector tr_camera_lens_R0;
+    G4ThreeVector tr_camera_lens_R1;
+    G4ThreeVector tr_camera_lens_R2;
     
     //Solids and meshes
     G4VSolid * cad_Cathode_solid;
