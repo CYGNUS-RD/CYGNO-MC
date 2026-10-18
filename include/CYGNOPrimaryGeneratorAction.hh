@@ -33,7 +33,7 @@ class CYGNOPrimaryGeneratorAction : public G4VUserPrimaryGeneratorAction
   G4int n_particle;
   G4double particle_energy;
 
-  bool fFillNtuple;
+  bool fFillNtuple = true;
   G4double energy_pri;
  
 };
