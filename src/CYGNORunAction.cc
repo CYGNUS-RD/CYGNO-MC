@@ -55,6 +55,11 @@ void CYGNORunAction::Book()
   man->CreateNtupleDColumn("xpos_vertex");
   man->CreateNtupleDColumn("ypos_vertex");
   man->CreateNtupleDColumn("zpos_vertex");
+  // Sampled source direction (dimensionless); event ID links to nTuple.
+  man->CreateNtupleDColumn("dir_x");
+  man->CreateNtupleDColumn("dir_y");
+  man->CreateNtupleDColumn("dir_z");
+  man->CreateNtupleIColumn("eventnumber");
   man->FinishNtuple();
 
   // ---- secondary ntuple ------   
