@@ -141,8 +141,8 @@ void CYGNOEventAction::EndOfEventAction(const G4Event* evt)
 	    v_energyDep_hits_QF_geant.push_back((*CYGNOHC)[i]->GetIonizingEnergy());   //fill with ionising energy calculated by geant4
 	    //G4cout << "kin ene: " << (*CYGNOHC)[i]->GetKineticEne() << G4endl;
 	    // apply QF for the same hit
-	    if ((*CYGNOHC)[i]->GetKineticEne() <= 1.){
-	    	//G4cout << "######## Applying QF average when track goes <1 keV (due to kill track at 1 keV) ############" << G4endl; 
+	    // Kinetic energy is in keV; the SRIM/TRIM model starts at 25 eV.
+	    if ((*CYGNOHC)[i]->GetKineticEne() <= 0.025){
 	    	(*CYGNOHC)[i]->ApplyQuenchingAvg(); 
 	    }
 	    else{
