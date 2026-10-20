@@ -49,6 +49,8 @@ void CYGNOPrimaryGeneratorAction::GeneratePrimaries(G4Event* anEvent)
 
     // Access particle position
     G4ThreeVector particlePosition = particleGun->GetParticlePosition();
+    // Sampled source unit vector before transport (one primary/event in NR macros).
+    G4ThreeVector direction = particleGun->GetParticleMomentumDirection();
     
     //Fill ntuple #1
     G4AnalysisManager* man = G4AnalysisManager::Instance();
@@ -56,6 +58,10 @@ void CYGNOPrimaryGeneratorAction::GeneratePrimaries(G4Event* anEvent)
     man->FillNtupleDColumn(1,1,particlePosition[0]);
     man->FillNtupleDColumn(1,2,particlePosition[1]);
     man->FillNtupleDColumn(1,3,particlePosition[2]);
+    man->FillNtupleDColumn(1,4,direction.x());
+    man->FillNtupleDColumn(1,5,direction.y());
+    man->FillNtupleDColumn(1,6,direction.z());
+    man->FillNtupleIColumn(1,7,anEvent->GetEventID());
     man->AddNtupleRow(1);
   }
 }

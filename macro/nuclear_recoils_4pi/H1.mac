@@ -1,0 +1,29 @@
+# One job per ion; set G4FORCENUMBEROFTHREADS=1 before launching CYGNO.
+# 1,000,000 events; 0.25 keV-1 MeV total ion energy, random log-uniform.
+# Fixed center of the +z sensitive gas volume; isotropic initial direction (4pi).
+# Gas pressure/temperature are compiled properties.
+/control/verbose 0
+/run/verbose 1
+/event/verbose 0
+/tracking/verbose 0
+/gps/verbose 0
+/gps/particle proton
+/gps/number 1
+/gps/pos/type Point
+/gps/pos/centre 0 0 245 mm
+/gps/ang/type iso
+/gps/ang/mintheta 0 deg
+/gps/ang/maxtheta 180 deg
+/gps/ang/minphi 0 deg
+/gps/ang/maxphi 360 deg
+/gps/ene/type Pow
+/gps/ene/min 0.25 keV
+/gps/ene/max 1 MeV
+/gps/ene/alpha -1
+/CYGNO/primaryGenerator/fillNtuple true
+/CYGNO/outfile nr_4pi_H1_0p25keV_1MeV_1000000ev_sqrt40keV_25eV
+/random/setSeeds 318330389 349925992
+# Recoil cap: stepmax * min(1,sqrt(E/40 keV)); no spatial floor.
+/process/em/lowestMuHadEnergy 25 eV
+/CYGNO/stepmax 52 um
+/run/beamOn 1000000
