@@ -207,6 +207,8 @@ void CYGNODetectorMaterial::ConstructMaterials(){
     FieldCage->AddMaterial(Kapton, fracMass=0.285);
     FieldCage->AddMaterial(Cu, fracMass=0.715);
 
+    // Nylon66
+    Nylon66 = man->FindOrBuildMaterial("G4_NYLON-6-6");
     
     Vacuum = new G4Material("Vacuum",1.,massOfMole, density= 1.e-25*g/cm3,kStateGas,temperature, pressure);
     Water  = man->FindOrBuildMaterial("G4_WATER");
@@ -284,6 +286,7 @@ G4Material* CYGNODetectorMaterial::Material(G4String what)
   if(what == "Kapton")            material = Kapton;
   if(what == "GEM")               material = GEM;
   if(what == "FieldCage")         material = FieldCage;
+  if(what == "Nylon66")           material = Nylon66;
  
   return material;
 }

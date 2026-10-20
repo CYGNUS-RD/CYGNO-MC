@@ -514,7 +514,7 @@ G4VPhysicalVolume* CYGNODetectorConstruction::Construct()
 
       //FCSupport
       cad_FCSupport_solid = mesh_FCSupport->GetSolid();
-      cad_FCSupport_logical = new G4LogicalVolume(cad_FCSupport_solid, CYGNOMaterials->Material("Perspex"), "cad_FCSupport_logical", 0, 0, 0);
+      cad_FCSupport_logical = new G4LogicalVolume(cad_FCSupport_solid, CYGNOMaterials->Material("Nylon66"), "cad_FCSupport_logical", 0, 0, 0);
       cad_FCSupport_logical->SetVisAttributes(CYGNOMaterials->VisAttributes("Perspex"));
       
       
@@ -531,7 +531,7 @@ G4VPhysicalVolume* CYGNODetectorConstruction::Construct()
 
       //GEM frame
       cad_GemFrame_solid = mesh_GemFrame->GetSolid();
-      cad_GemFrame_logical = new G4LogicalVolume(cad_GemFrame_solid, CYGNOMaterials->Material("Perspex"), "cad_GemFrame_logical", 0, 0, 0);
+      cad_GemFrame_logical = new G4LogicalVolume(cad_GemFrame_solid, CYGNOMaterials->Material("Nylon66"), "cad_GemFrame_logical", 0, 0, 0);
       cad_GemFrame_logical->SetVisAttributes(CYGNOMaterials->VisAttributes("Perspex"));
       
       //InnerShield Cu
