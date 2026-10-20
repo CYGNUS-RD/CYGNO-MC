@@ -1,5 +1,8 @@
 #include "CYGNOStepMax.hh"
 #include "CYGNOStepMaxMessenger.hh"
+#include "G4SystemOfUnits.hh"
+#include <algorithm>
+#include <cmath>
 
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
 
@@ -34,6 +37,9 @@ G4double CYGNOStepMax::PostStepGetPhysicalInteractionLength(
   // condition is set to "Not Forced"
   *condition = NotForced;
   G4double ProposedStep = fMaxChargedStep;
+  const G4int pdg = aTrack.GetDefinition()->GetPDGEncoding();
+  if (fMaxChargedStep < DBL_MAX && (pdg == 2212 || pdg > 1000000000))
+    ProposedStep *= std::min(1., std::sqrt(aTrack.GetKineticEnergy()/(40.*CLHEP::keV)));
 
   return ProposedStep;
 }

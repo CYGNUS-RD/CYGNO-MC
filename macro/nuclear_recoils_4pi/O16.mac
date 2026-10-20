@@ -22,6 +22,9 @@
 /gps/ene/max 1 MeV
 /gps/ene/alpha -1
 /CYGNO/primaryGenerator/fillNtuple true
-/CYGNO/outfile nr_4pi_O16
-/random/setSeeds 14899487 865756336
+/CYGNO/outfile nr_4pi_O16_0p25keV_1MeV_1000000ev_sqrt40keV_25eV
+/random/setSeeds 578656 603927334
+# Recoil cap: stepmax * min(1,sqrt(E/40 keV)); no spatial floor.
+/process/em/lowestMuHadEnergy 25 eV
+/CYGNO/stepmax 6.5 um
 /run/beamOn 1000000
