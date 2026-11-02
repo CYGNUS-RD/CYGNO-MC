@@ -133,16 +133,16 @@ void CYGNOEventAction::EndOfEventAction(const G4Event* evt)
         v_energyDep_hits.push_back(rawEdep);
 	
 	G4int pdg = (int)(*CYGNOHC)[i]->GetParticleID(); 
-	if(pdg > 1000000000) {
-	    // Ion => fill NR (raw) and NRQF (quenched)
+	if(pdg == 2212 || pdg > 1000000000) {
+	    // Proton or ion => fill NR (raw) and NRQF (quenched)
 	    // store raw deposit in energyDep_hits_NR
 	    v_energyDep_hits_NR.push_back(rawEdep);
 	    v_energyDep_hits_NRQF_geant.push_back((*CYGNOHC)[i]->GetIonizingEnergy());   //fill with ionising energy calculated by geant4
 	    v_energyDep_hits_QF_geant.push_back((*CYGNOHC)[i]->GetIonizingEnergy());   //fill with ionising energy calculated by geant4
 	    //G4cout << "kin ene: " << (*CYGNOHC)[i]->GetKineticEne() << G4endl;
 	    // apply QF for the same hit
-	    if ((*CYGNOHC)[i]->GetKineticEne() <= 1.){
-	    	//G4cout << "######## Applying QF average when track goes <1 keV (due to kill track at 1 keV) ############" << G4endl; 
+	    // Kinetic energy is in keV; the SRIM/TRIM model starts at 25 eV.
+	    if ((*CYGNOHC)[i]->GetKineticEne() <= 0.025){
 	    	(*CYGNOHC)[i]->ApplyQuenchingAvg(); 
 	    }
 	    else{
@@ -168,8 +168,8 @@ void CYGNOEventAction::EndOfEventAction(const G4Event* evt)
 
       // sum total energy deposited in hits (no QF)
 	    energyDep += rawEdep;
-	    //if particle releasing energy is an ion (PDG numbering scheme for ions 100ZZZAAAI)
-	    if ((int)(*CYGNOHC)[i]->GetParticleID()>1000000000)
+	    // Protons and ions are nuclear recoils (ion PDG scheme: 100ZZZAAAI).
+	    if (pdg == 2212 || pdg > 1000000000)
 	    {
 	       // Apply QF derivative step by step for nuclear hits
 	       energyDep_NR += rawEdep;

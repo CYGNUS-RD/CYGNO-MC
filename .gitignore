@@ -175,3 +175,5 @@ cython_debug/
 
 # MacOS hidder files
 .DS_Store
+
+tests/
