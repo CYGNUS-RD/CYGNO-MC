@@ -1,5 +1,11 @@
 # Introduction
 
+## Geometry
+
+Default: `../geometry/cygno04_v4_ASCII/`. Missing CAD uses the nominal analytic detector; incomplete CAD reports an error.
+Select legacy v3 with `CYGNO_GEOMETRY_PATH=../geometry/cygno_04_v3_ASCII ./CYGNO run.mac`.
+Isotope input examples are in `backgrounds/`.
+
 This repository hosts the Monte Carlo simulation for CYGNO experiment.
 The prerequisite to run this simulations is to have ROOT (v6.X.X), GEANT4 (v11.2.X) and CADMesh (v2) software installed.
 For more informations about the software see:
