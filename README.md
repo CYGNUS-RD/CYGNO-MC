@@ -1,115 +1,73 @@
-# Introduction
+# CYGNO-MC
 
-This repository hosts the Monte Carlo simulation for CYGNO experiment.
-The prerequisite to run this simulations is to have ROOT (v6.X.X), GEANT4 (v11.2.X) and CADMesh (v2) software installed.
-For more informations about the software see:
-* ROOT:  https://root.cern.ch/ 
-* GEANT4: http://geant4.cern.ch/
-* CADMesh: https://github.com/christopherpoole/CADMesh
+Geant4 detector simulation for CYGNO.
 
+## Build and run
 
-# Setup ROOT, GEANT4 and CADMesh
+Requires ROOT 6 and Geant4; CADMesh 2 is bundled.
 
-Setup all the environment variables of ROOT and GEANT4.
+| Tested environment | Geant4 | ROOT |
+| --- | --- | --- |
+| Local | 11.4.0 | 6.36.08 |
+| CNAF (`g4v11.3_cygno04`, v4 geometry) | 11.2.0 | 6.30.02 |
 
-## Instructions 
+Load the ROOT/Geant4 environments; set `Geant4_DIR`/`ROOT_DIR` to their CMake package directories if needed. From a common parent directory:
 
-In  general you can do
-```
-###for ROOT
-source <path-to-root>/bin/thisroot.sh
-## for pyROOT
-export LD_LIBRARY_PATH=$PYTHONDIR/lib:$LD_LIBRARY_PATH
-export PYTHONPATH=$ROOTSYS/lib:$PYTHONPATH
-## for geant4
-source <path-to-geant>/bin/geant4.sh 
-alias g4cmake="cmake -DGeant4_DIR=<path-to-geant4>lib64/Geant4-11.X.X/"
-```
-# Download CYGNO-MC repository
-
-Download geometry files
-```
-git clone git@github.com:CYGNUS-RD/geometry.git
-```
-
-Download Geant4 code 
-```
-git clone git@github.com:CYGNUS-RD/CYGNO-MC.git
-```
-
-Now you have downloaded the code in `CYGNO-MC/` directory
-
-# Setup CYGNO-MC code
-
-Create a build directory 
-```
-mkdir CYGNO-MC-build
-```
-and compile CYGNO-MC code
-```
+```sh
+git clone --branch g4v11.3_cygno04 git@github.com:fiorotto8/CYGNO-MC.git
+git clone git@github.com:fiorotto8/geometry.git
+cmake -S CYGNO-MC -B CYGNO-MC-build
+cmake --build CYGNO-MC-build -j
 cd CYGNO-MC-build
-g4cmake ../CYGNOMC
-make -j`nproc`
+./CYGNO /path/to/run.mac
 ```
 
-Now you have the CYGNO executable in the build directory.
-You can run it in graphic mode:
-```
-./CYGNO
-```
-or specify a macro to run instructions
-```
-./CYGNO macro.mac
-```
-Some example macros are available in the `macro` directory.
+Run `./CYGNO` for the interactive interface. Commands: [CYGNOCommandsREADME](CYGNOCommandsREADME).
+The current CMake configuration forces Debug builds.
 
+## Geometry
 
-A guide of CYGNO commands is in  CYGNOCommandsREADME file.
+Default: `../geometry/cygno04_v4_ASCII/`. Missing CAD uses the nominal analytic detector; incomplete CAD reports an error.
+Select legacy v3 with `CYGNO_GEOMETRY_PATH=../geometry/cygno_04_v3_ASCII ./CYGNO run.mac`.
+Isotope input examples are in `backgrounds/`.
 
+## CNAF jobs
 
-# Split jobs in the batch system
+Follow [mycondor: Submit job to CNAF](https://github.com/CYGNUS-RD/mycondor#submit-job-to-cnaf).
+The standard branch `g4v11.3_cygno04` (`5e777d0`) with v4 geometry passed 10- and 100-event CNAF runs, including ROOT output retrieval, without source-code changes.
+Before building, source `/cvmfs/sft.cern.ch/lcg/views/LCG_105/x86_64-ubuntu2204-gcc11-opt/setup.sh` to use the tested worker libraries. The tested worker image is `cygno-wn_v2.4.sif`.
 
-A set of scripts to split the simulation in multiple jobs is provided in the folder `scripts`.
-Some command examples are provided for roma3 cluster, where PBS batch system is used.
-Examples of basic commands of PBS can be found in https://www.bo.infn.it/alice/introgrd/pbsabout/node17.html (or simply google).
+Copy the templates from `/cvmfs/sft-cygno.infn.it/config/templates/` into `Launch/Sub_folder/`.
+Prepare a job input directory containing `CYGNO`, `run.mac` and the compressed geometry:
 
-## Submit and check status of single job
-
-Submit job:
-```
-qsub scripts/examplejob.sh
-```
-Check status:
-```
-qstat -u $USER
+```sh
+tar -czf geo_v4.tar.gz -C /path/to/geometry cygno04_v4_ASCII
 ```
 
+Create `run_mc.sh` there; the templates supply the worker software environment:
 
-## Split jobs
-
-Example to split 100M events into 100 jobs:
+```sh
+#!/bin/bash
+set -e
+tar -xzf geo_v4.tar.gz
+export CYGNO_GEOMETRY_PATH="$PWD/cygno04_v4_ASCII"
+export G4FORCENUMBEROFTHREADS=2
+exec ./CYGNO run.mac > cygno_out.log 2>&1
 ```
-python scripts/submit_jobs_lngs.py -m CYGNOtest_surface_gamma --tag ext_gamma -n 100000000 -e 1000000 --builddir ../CYGNO-MC-build/ --outdir ./
+
+Run `chmod +x run_mc.sh`. In `subber.sh`, set `EXECUTEPATH` to the input directory, `EXECUTE` to `run_mc.sh`, `CPUs=2`, and include the executable, macro and archive in `OTHERFILE`.
+Set `FILENAMES` to the ROOT filename chosen in the macro and `cygno_out.log`, with a unique `BATCHNAME` and output `TAG` in an allowed bucket.
+Set the thread count inside the worker script to match `CPUs`; submission-shell variables are not automatically passed to the worker.
+Then submit and retrieve the job logs from `Launch/`:
+
+```sh
+cygno_htc -t
+cd Launch
+source Sub_folder/subber.sh
+cygno_htc -q
+cygno_htc -f JOBID CEID
 ```
 
-Options meaning:
-
-* `-m` name of the macro template. The script looks for the macro in the directory `macro/` (use macro name without `.mac` extension)
-* `-n` total number of events to generate
-* `-e` events per job
-* `--tag` useful tag to identify the simulation. Output will be saved in a directory with this name
-* `--builddir` path to dir containing CYGNO executable
-* `--outdir` out path
-
-The output is saved in `<outdir>/pbs_outputs/<tag-string>`
-Also other directories will be created in `pbs_logs` and  `pbs_workdir` folders, containing respectively the logs and the copy of the macro for each job.
-
-## Submit jobs with multiple macro configurations (for radioactive decays)
-
-Example to send on batch multiple radioactive isotopes simulations:
-```
-python scripts/submit_jobs_rm3.py -m CYGNOtest --tag PbShieldRadioactivity -f U238Activity_Shield2Pb_10Pb2Cu.txt -e 1000000  --builddir /storage/local/home/cygnorm3/dimperio/CYGNO/CYGNO-MC-build/
-```
-Options meaning:
-* `-f` configuration file for isotopes to be simulated. The script looks for the file in the `background/` directory. The file contains 4 columns: Name, Z, A, NEvents
-* the other options are the same. Note that `-n` option is not necessary when `-f` option is used (and will be ignored), since the total number of events is in the configuration file
+The compressed v4 geometry used in these tests was about 4.3 MB and transferred successfully with the job inputs.
+ROOT files and `cygno_out.log` go to the configured storage bucket/path; download them there separately from `cygno_htc -f`.
+Check for `Geometry mode: CAD v4` in the log and the requested event count in ROOT tree `tree1`.
