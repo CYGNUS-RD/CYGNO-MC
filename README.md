@@ -28,6 +28,7 @@ The current CMake configuration forces Debug builds.
 ## Geometry
 
 Default: `../geometry/cygno04_v4_ASCII/`. Missing CAD uses the nominal analytic detector; incomplete CAD reports an error.
+v4 includes the 16 PMTs and sockets (`cad_PMT_physical`, `cad_PMTSocket_physical`); their materials are placeholders (solid borosilicate glass) until the real masses are known.
 Select legacy v3 with `CYGNO_GEOMETRY_PATH=../geometry/cygno_04_v3_ASCII ./CYGNO run.mac`.
 Isotope input examples are in `backgrounds/`.
 
@@ -68,6 +69,6 @@ cygno_htc -q
 cygno_htc -f JOBID CEID
 ```
 
-The compressed v4 geometry used in these tests was about 4.3 MB and transferred successfully with the job inputs. With the PMTs, sockets and PMMA windows it is about 6.1 MB.
+The compressed v4 geometry (about 6.1 MB; 4.3 MB in the tested runs) transfers with the job inputs.
 ROOT files and `cygno_out.log` go to the configured storage bucket/path; download them there separately from `cygno_htc -f`.
 Check for `Geometry mode: CAD v4` in the log and the requested event count in ROOT tree `tree1`.
