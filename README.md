@@ -34,7 +34,7 @@ Isotope input examples are in `backgrounds/`.
 ## CNAF jobs
 
 Follow [mycondor: Submit job to CNAF](https://github.com/CYGNUS-RD/mycondor#submit-job-to-cnaf).
-The standard branch `g4v11.3_cygno04` (`5e777d0`) with v4 geometry passed 10- and 100-event CNAF runs, including ROOT output retrieval, without source-code changes.
+The standard branch `g4v11.3_cygno04` (`5e777d0`) with v4 geometry passed 10- and 100-event CNAF runs, including ROOT output retrieval, without source-code changes. That test predates the PMT, socket and PMMA-window geometry.
 Before building, source `/cvmfs/sft.cern.ch/lcg/views/LCG_105/x86_64-ubuntu2204-gcc11-opt/setup.sh` to use the tested worker libraries. The tested worker image is `cygno-wn_v2.4.sif`.
 
 Copy the templates from `/cvmfs/sft-cygno.infn.it/config/templates/` into `Launch/Sub_folder/`.
@@ -68,6 +68,6 @@ cygno_htc -q
 cygno_htc -f JOBID CEID
 ```
 
-The compressed v4 geometry used in these tests was about 4.3 MB and transferred successfully with the job inputs.
+The compressed v4 geometry used in these tests was about 4.3 MB and transferred successfully with the job inputs. With the PMTs, sockets and PMMA windows it is about 6.1 MB.
 ROOT files and `cygno_out.log` go to the configured storage bucket/path; download them there separately from `cygno_htc -f`.
 Check for `Geometry mode: CAD v4` in the log and the requested event count in ROOT tree `tree1`.
