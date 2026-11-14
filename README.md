@@ -14,8 +14,8 @@ Requires ROOT 6 and Geant4; CADMesh 2 is bundled.
 Load the ROOT/Geant4 environments; set `Geant4_DIR`/`ROOT_DIR` to their CMake package directories if needed. From a common parent directory:
 
 ```sh
-git clone --branch g4v11.3_cygno04 git@github.com:fiorotto8/CYGNO-MC.git
-git clone git@github.com:fiorotto8/geometry.git
+git clone --branch g4v11.3_cygno04 git@github.com:CYGNUS-RD/CYGNO-MC.git
+git clone git@github.com:CYGNUS-RD/geometry.git
 cmake -S CYGNO-MC -B CYGNO-MC-build
 cmake --build CYGNO-MC-build -j
 cd CYGNO-MC-build
@@ -35,7 +35,7 @@ Isotope input examples are in `backgrounds/`.
 ## CNAF jobs
 
 Follow [mycondor: Submit job to CNAF](https://github.com/CYGNUS-RD/mycondor#submit-job-to-cnaf).
-The standard branch `g4v11.3_cygno04` (`5e777d0`) with v4 geometry passed 10- and 100-event CNAF runs, including ROOT output retrieval, without source-code changes. That test predates the PMT, socket and PMMA-window geometry.
+This branch (at `5e777d0`) passed 10- and 100-event CNAF runs with the v4 geometry, including ROOT output retrieval, without source-code changes. That test predates the PMT, socket and PMMA-window geometry.
 Before building, source `/cvmfs/sft.cern.ch/lcg/views/LCG_105/x86_64-ubuntu2204-gcc11-opt/setup.sh` to use the tested worker libraries. The tested worker image is `cygno-wn_v2.4.sif`.
 
 Copy the templates from `/cvmfs/sft-cygno.infn.it/config/templates/` into `Launch/Sub_folder/`.
