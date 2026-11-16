@@ -4,8 +4,8 @@ The geometry is built at startup, before any macro runs. The laboratory, shieldi
 commands below only store values; /CYGNO/updateGeo applies them, but it crashes
 multithreaded runs (tested with Geant4 11.4). In practice the startup defaults apply:
 NoCave, FullShield with four 1 cm Air layers, and He/CF4 60/40. To change them, edit
-the constructor defaults in src/CYGNODetectorConstruction.cc and gasHeFrac in
-src/CYGNODetectorMaterial.cc.
+the constructor defaults in src/CYGNODetectorConstruction.cc and both gasHeFrac and
+gasCF4Frac in src/CYGNODetectorMaterial.cc, keeping their sum equal to 1.
 
 /CYGNO/lab/select LNGS|NoCave                 Default: NoCave
 /CYGNO/lab/externalrockthick <value> <unit>
