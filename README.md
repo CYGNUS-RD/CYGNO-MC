@@ -2,6 +2,9 @@
 
 Geant4 detector simulation for CYGNO.
 
+Physics: EM option4, including its nuclear stopping; nuclear-recoil hits get an SRIM/TRIM quenching factor.
+The screened nuclear-recoil transport is on `master` only.
+
 ## Build and run
 
 Requires ROOT 6 and Geant4; CADMesh 2 is bundled.
@@ -9,7 +12,7 @@ Requires ROOT 6 and Geant4; CADMesh 2 is bundled.
 | Tested environment | Geant4 | ROOT |
 | --- | --- | --- |
 | Local | 11.4.0 | 6.36.08 |
-| CNAF (`g4v11.3_cygno04`, v4 geometry) | 11.2.0 | 6.30.02 |
+| CNAF | 11.2.0 | 6.30.02 |
 
 Load the ROOT/Geant4 environments; set `Geant4_DIR`/`ROOT_DIR` to their CMake package directories if needed. From a common parent directory:
 
@@ -35,7 +38,7 @@ Isotope input examples are in `backgrounds/`.
 ## CNAF jobs
 
 Follow [mycondor: Submit job to CNAF](https://github.com/CYGNUS-RD/mycondor#submit-job-to-cnaf).
-This branch (at `5e777d0`) passed 10- and 100-event CNAF runs with the v4 geometry, including ROOT output retrieval, without source-code changes. That test predates the PMT, socket and PMMA-window geometry.
+This workflow was tested on the CNAF queue with this branch (`5e777d0`) and the v4 geometry, including ROOT output retrieval, before the PMT, socket and PMMA-window update.
 Before building, source `/cvmfs/sft.cern.ch/lcg/views/LCG_105/x86_64-ubuntu2204-gcc11-opt/setup.sh` to use the tested worker libraries. The tested worker image is `cygno-wn_v2.4.sif`.
 
 Copy the templates from `/cvmfs/sft-cygno.infn.it/config/templates/` into `Launch/Sub_folder/`.
@@ -72,3 +75,8 @@ cygno_htc -f JOBID CEID
 The compressed v4 geometry (about 7 MB; 4.3 MB in the tested runs) transfers with the job inputs.
 ROOT files and `cygno_out.log` go to the configured storage bucket/path; download them there separately from `cygno_htc -f`.
 Check for `Geometry mode: CAD v4` in the log and the requested event count in ROOT tree `tree1`.
+
+### Many jobs and PBS
+
+Multi-job CNAF submission (`scripts/submit_cnaf.sh`) and PBS jobs at LNGS are maintained on `master`.
+The legacy PBS scripts in `scripts/` are kept unchanged here; their job environment (Geant4 10.5) does not match this branch.
