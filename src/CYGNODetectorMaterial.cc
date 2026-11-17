@@ -110,8 +110,6 @@ void CYGNODetectorMaterial::ConstructMaterials(){
     //Camera = FindOrBuildMaterial("G4_Pyrex_Glass");
     Camera = FindOrBuildMaterial("G4_GLASS_PLATE");
 
-
-    
     //lngs rock material definition
     density = 2.71*g/cm3;
     lngsRock = new G4Material(name="LNGSRock",density,ncomponents=7);
@@ -130,6 +128,18 @@ void CYGNODetectorMaterial::ConstructMaterials(){
     Perspex->AddElement(elH, natoms=8);
     Perspex->AddElement(elC, natoms=5);
     Perspex->AddElement(elO, natoms=2);
+
+    // PMTs (Hamamatsu R7378A) and socket assemblies (E2924-500) at the effective
+    // densities that give the measured masses to the solid v4 meshes (16 bodies
+    // each: PMT.stl 346.671 cm3, PMT_socket.stl 378.048 cm3). Weighed: 8 PMTs
+    // 135.3 g; 4 sockets with their 450 mm cables and connectors 290.13 g.
+    // PMTs take the borosilicate composition; sockets (plastic housing and
+    // potting compound) take the acrylic one. The cables are not modelled, so
+    // their mass sits in the socket bodies. Recompute if either mesh changes.
+    PMTMaterial = new G4Material("PMT_R7378A_eff", 16*(135.3*g/8)/(346.671*cm3), ncomponents=1);
+    PMTMaterial->AddMaterial(BSglass, fractionmass=1.);
+    PMTSocketMaterial = new G4Material("PMTSocket_E2924-500_eff", 16*(290.13*g/4)/(378.048*cm3), ncomponents=1);
+    PMTSocketMaterial->AddMaterial(Perspex, fractionmass=1.);
 
     //Ceramic (for resistors)
     density = 3.7 * g/cm3;
@@ -227,6 +237,7 @@ void CYGNODetectorMaterial::ConstructMaterials(){
     VacuumVis = new G4VisAttributes(G4Color(1.,1.,0.4));
     CopperVis = new G4VisAttributes(G4Colour(1.,0.,0.));
     CameraVis = new G4VisAttributes(G4Colour(1.,0.,1.));
+    PMTVis = new G4VisAttributes(G4Colour(0.2,0.4,1.));
     PerspexVis = new G4VisAttributes(G4Colour(0.,1.,1.));
     CYGNOGasVis = new G4VisAttributes(G4Colour(0.,1.,0.));
     //CopperVis->SetForceWireframe(true);
@@ -283,6 +294,8 @@ G4Material* CYGNODetectorMaterial::Material(G4String what)
   if(what == "CYGNO_gas")         material = CYGNO_gas;
   if(what == "Perspex")           material = Perspex;
   if(what == "Camera")            material = Camera;
+  if(what == "PMT")               material = PMTMaterial;
+  if(what == "PMTSocket")         material = PMTSocketMaterial;
   if(what == "Kapton")            material = Kapton;
   if(what == "GEM")               material = GEM;
   if(what == "FieldCage")         material = FieldCage;
@@ -304,6 +317,7 @@ G4VisAttributes* CYGNODetectorMaterial::VisAttributes(G4String what)
   if(what == "LNGSRock")      vis = LNGSRockVis;
   if(what == "Concrete")      vis = ConcreteVis;
   if(what == "Camera")        vis = CameraVis;
+  if(what == "PMT")           vis = PMTVis;
   if(what == "CYGNO_gas")     vis = CYGNOGasVis;
   return vis;
 }
